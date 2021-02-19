@@ -1,5 +1,5 @@
 import express from 'express'
-import { Application } from 'express'
+import { Application, RequestHandler } from 'express'
 
 class App {
     public app: Application
@@ -35,8 +35,8 @@ class App {
     private template() {
         this.app.set('view engine', 'pug')
     }
-    public GraphQL(route: any, graphqlHTTP: any) {
-        this.app.use(route, graphqlHTTP)
+    public GraphQL(route: string, GraphQLParams: RequestHandler) {
+        this.app.use(route, GraphQLParams)
     }
 
     public listen() {
