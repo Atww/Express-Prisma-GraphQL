@@ -3,15 +3,16 @@ import * as bodyParser from 'body-parser'
 import { schema } from './prisma/schema'
 import { context } from './prisma/context'
 import { graphqlHTTP } from 'express-graphql'
-import { PrismaClient, Prisma } from "@prisma/client";
 import HomeController from './controller/home.controller';
 import config from './config';
 import loggerMiddleware from './middleware/logger';
+import ProjectController from './controller/project.controller';
 
 const app = new App({
     port: config.port,
     controllers: [
         new HomeController(),
+        new ProjectController()
     ],
     middleWares: [
         bodyParser.json(),
