@@ -1,5 +1,8 @@
 import {
     objectType,
+    nonNull,
+    stringArg,
+    arg
 } from 'nexus'
 import { TUsrMForeman } from './foremanSchema'
 
@@ -8,8 +11,13 @@ export const QueryEmployee = objectType({
     definition(t) {
         t.nonNull.list.nonNull.field('allEmp', {
             type: 'TUsrMEmployee',
-            resolve: (_parent, _args, context) => {
-                return context.prisma.tUsrMEmployee.findMany()
+            args: {
+                id: stringArg(),
+            },
+            resolve: (_parent, args, context) => {
+                return context.prisma.tUsrMEmployee.findMany({
+                    where: { XVEmpCode: args.id || undefined },
+                })
             },
         })
     },
@@ -20,7 +28,6 @@ export const TUsrMEmployee = objectType({
     definition(t) {
         t.nonNull.string('XVEmpCode')
         t.string('XVEmpFirstName')
-        t.string('XVEmpLastName')
         t.string('XVFrmCode')
         t.field('TUsrMForeman', {
             type: 'TUsrMForeman',

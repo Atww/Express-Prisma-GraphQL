@@ -3,14 +3,13 @@
 
 
 type Query {
-  allEmp: [TUsrMEmployee!]!
+  allEmp(id: String): [TUsrMEmployee!]!
 }
 
 type TUsrMEmployee {
   TUsrMForeman: TUsrMForeman
   XVEmpCode: String!
   XVEmpFirstName: String
-  XVEmpLastName: String
   XVFrmCode: String
 }
 
