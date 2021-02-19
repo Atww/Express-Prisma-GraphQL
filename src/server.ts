@@ -1,17 +1,26 @@
-import express from 'express'
-import config from './config'
+import App from './app';
+import * as bodyParser from 'body-parser'
 import { schema } from './prisma/schema'
 import { context } from './prisma/context'
 import { graphqlHTTP } from 'express-graphql'
 import { PrismaClient, Prisma } from "@prisma/client";
-const prisma = new PrismaClient()
+import HomeController from './controller/home.controller';
+import config from './config';
+import loggerMiddleware from './middleware/logger';
 
-const app = express()
-app.get('/', async (request, response) => {
-    const result = await prisma.$queryRaw(`Select XVEmpCode FROM TUsrMEmployee`)
-    response.send(result);
-});
-app.use(
+const app = new App({
+    port: config.port,
+    controllers: [
+        new HomeController(),
+    ],
+    middleWares: [
+        bodyParser.json(),
+        bodyParser.urlencoded({ extended: true }),
+        loggerMiddleware
+    ]
+})
+
+app.GraphQL(
     '/graphql',
     graphqlHTTP({
         schema: schema,
@@ -20,9 +29,4 @@ app.use(
     }),
 )
 
-app.listen(config.port, () => {
-    console.log(`\
-    🚀 Server ready at: http://localhost:4000/graphql
-    ⭐️ See sample queries: http://pris.ly/e/ts/graphql#using-the-graphql-api
-    `)
-})
+app.listen()
