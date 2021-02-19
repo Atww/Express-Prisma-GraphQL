@@ -2,16 +2,17 @@ import {
     makeSchema,
     asNexusMethod,
 } from 'nexus'
-import { GraphQLDateTime } from 'graphql-iso-date'
-import { QueryEmployee, TUsrMEmployee } from './schema/empSchema'
-export const DateTime = asNexusMethod(GraphQLDateTime, 'date')
-
+// import { GraphQLDateTime } from 'graphql-iso-date'
+import { QueryEmployee, TUsrMEmployee, } from './schema/empSchema'
+import { TUsrMForeman } from './schema/foremanSchema'
+// export const DateTime = asNexusMethod(GraphQLDateTime, 'date')
 
 
 export const schema = makeSchema({
     types: [
         QueryEmployee,
-        TUsrMEmployee
+        TUsrMEmployee,
+        TUsrMForeman
     ],
     outputs: {
         schema: __dirname + '/../../schema.graphql',

@@ -1,6 +1,7 @@
 import {
     objectType,
 } from 'nexus'
+import { TUsrMForeman } from './foremanSchema'
 
 export const QueryEmployee = objectType({
     name: 'Query',
@@ -19,10 +20,22 @@ export const TUsrMEmployee = objectType({
     definition(t) {
         t.nonNull.string('XVEmpCode')
         t.string('XVEmpFirstName')
+        t.string('XVEmpLastName')
+        t.string('XVFrmCode')
+        t.field('TUsrMForeman', {
+            type: 'TUsrMForeman',
+            resolve: (parent, _, context) => {
+                return context.prisma.tUsrMEmployee
+                    .findUnique({
+                        where: { XVEmpCode: parent.XVEmpCode },
+                    })
+                    .TUsrMForeman()
+            },
+        })
     },
 })
 
 export default {
     QueryEmployee,
-    TUsrMEmployee
+    TUsrMEmployee,
 }

@@ -7,6 +7,15 @@ type Query {
 }
 
 type TUsrMEmployee {
+  TUsrMForeman: TUsrMForeman
   XVEmpCode: String!
   XVEmpFirstName: String
+  XVEmpLastName: String
+  XVFrmCode: String
+}
+
+type TUsrMForeman {
+  XVFrmCode: String!
+  XVFrmFirstName: String
+  XVFrmLastName: String
 }
