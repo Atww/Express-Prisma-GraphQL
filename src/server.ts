@@ -20,13 +20,23 @@ const app = new App({
         loggerMiddleware
     ]
 })
+if (config.env == "development") {
+    app.GraphQL(
+        '/devgraphql',
+        graphqlHTTP({
+            schema: schema,
+            context: context,
+            graphiql: true,
+        }),
+    )
+}
 
 app.GraphQL(
     '/graphql',
     graphqlHTTP({
         schema: schema,
         context: context,
-        graphiql: true,
+        graphiql: false,
     }),
 )
 
