@@ -9,31 +9,38 @@ datasource db {
 }
 
 model TUsrMEmployee {
-  XVEmpCode             String  @id @db.NVarChar(50)
-  XVEmpFirstName        String? @db.NVarChar(50)
-  XVEmpLastName         String? @db.NVarChar(50)
-  XVFrmCode             String? @db.NVarChar(50)
-  XVEmpImage            Bytes?
-  tUsrMForemanXVFrmCode String
+  XVEmpCode           String                @id @db.NVarChar(50)
+  XVEmpFirstName      String?               @db.NVarChar(50)
+  XVEmpLastName       String?               @db.NVarChar(50)
+  XVEmpImage          Bytes?
+  TUsrMForeman        TUsrMForeman?         @relation(fields: [XVFrmCode], references: [XVFrmCode])
+  XVFrmCode           String?               @db.NVarChar(50)
+  TUsrMTimeAttendance TUsrMTimeAttendance[]
 }
 
 model TUsrMForeman {
-  XVFrmCode      String  @id @db.NVarChar(50)
-  XVFrmFirstName String? @db.NVarChar(50)
-  XVFrmLastName  String? @db.NVarChar(50)
+  XVFrmCode           String                @id @db.NVarChar(50)
+  XVFrmFirstName      String?               @db.NVarChar(50)
+  XVFrmLastName       String?               @db.NVarChar(50)
+  TUsrMEmployee       TUsrMEmployee[]
+  TUsrMTimeAttendance TUsrMTimeAttendance[]
 }
 
 model TUsrMProject {
-  XVPrjCode String  @id @db.NVarChar(50)
-  XVPrjName String? @db.NVarChar(50)
+  XVPrjCode           String                @id @db.NVarChar(50)
+  XVPrjName           String?               @db.NVarChar(50)
+  TUsrMTimeAttendance TUsrMTimeAttendance[]
 }
 
 model TUsrMTimeAttendance {
-  XVTAID             Int       @id @default(autoincrement())
-  XVPrjCode          String?   @db.NVarChar(50)
-  XVFrmCode          String?   @db.NVarChar(50)
-  XVEmpCode          String?   @db.NVarChar(50)
-  XDTADateTime       DateTime? @db.DateTime
+  XVTAID             Int            @id @default(autoincrement())
+  TUsrMProject       TUsrMProject?  @relation(fields: [XVPrjCode], references: [XVPrjCode])
+  XVPrjCode          String?        @db.NVarChar(50)
+  TUsrMForeman       TUsrMForeman?  @relation(fields: [XVFrmCode], references: [XVFrmCode])
+  XVFrmCode          String?        @db.NVarChar(50)
+  TUsrMEmployee      TUsrMEmployee? @relation(fields: [XVEmpCode], references: [XVEmpCode])
+  XVEmpCode          String?        @db.NVarChar(50)
+  XDTADateTime       DateTime?      @db.DateTime
   XCTALatitude       Float?
   XCTALongtitude     Float?
   XCTASimilarity     Float?
