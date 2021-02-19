@@ -3,10 +3,13 @@ import config from './config'
 import { schema } from './prisma/schema'
 import { context } from './prisma/context'
 import { graphqlHTTP } from 'express-graphql'
+import { PrismaClient, Prisma } from "@prisma/client";
+const prisma = new PrismaClient()
 
 const app = express()
-app.get('/', (request, response) => {
-    response.send('Hello world!');
+app.get('/', async (request, response) => {
+    const result = await prisma.$queryRaw(`Select XVEmpCode FROM TUsrMEmployee`)
+    response.send(result);
 });
 app.use(
     '/graphql',
@@ -16,6 +19,7 @@ app.use(
         graphiql: true,
     }),
 )
+
 app.listen(config.port, () => {
     console.log(`\
     🚀 Server ready at: http://localhost:4000/graphql
